@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres-bet:
+    image: postgres:15
+    container_name: postgres-bet
+    restart: always
+    env_file:
+      - .env_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  line-provider:
+    build:
+      context: .
+      dockerfile: line_provider/Dockerfile
+    container_name: line-provider
+    restart: always
+    ports:
+      - "8001:8001"
+    env_file:
+      - line_provider/.env
+
+  bet-maker:
+    build:
+      context: .
+      dockerfile: bet_maker/Dockerfile
+    container_name: bet-maker
+    restart: always
+    ports:
+      - "8002:8002"
+    env_file:
+      - bet_maker/.env
+    depends_on:
+      - line-provider
+      - postgres-bet
+
+
+
+volumes:
+  postgres_data:
