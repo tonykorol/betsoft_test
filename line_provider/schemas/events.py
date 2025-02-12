@@ -32,3 +32,7 @@ class EventsGetResponse(BaseModel):
 
 class EventGetResponse(BaseModel):
     payload: Event
+
+
+class EventUpdateRequest(BaseModel):
+    state: EventState

@@ -1,6 +1,6 @@
 import time
 
-from ..schemas.event import Event, EventState
+from ..schemas.events import Event, EventState
 
 events: dict[str, Event] = {
     '1': Event(event_id=1, coefficient=1.2, deadline=int(time.time()) + 600, state=EventState.NEW),

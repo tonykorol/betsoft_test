@@ -3,8 +3,7 @@ import time
 from fastapi import HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from ..schemas.event import EventCreateRequest, Event, EventState
-
+from ..schemas.events import EventCreateRequest, Event, EventState, EventUpdateRequest
 from ..utils.events_data import events
 
 
@@ -28,10 +27,7 @@ async def get_event_by_id(event_id: int) -> Event:
         raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Invalid event id")
     return event
 
-async def update_event_status(event_id: int, status: int) -> Event:
+async def update_event_status(event_id: int, status: EventUpdateRequest) -> Event:
     event: Event = await get_event_by_id(event_id)
-    try:
-        event.state = EventState(status)
-    except ValueError:
-        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Invalid status value")
+    event.state = status.state
     return event

@@ -20,7 +20,7 @@ services:
       - "6379:6379"
 
   line-provider:
-    build: ./line-provider
+    build: line_provider
     container_name: line-provider
     restart: always
     ports:
@@ -31,7 +31,7 @@ services:
       - redis
 
   bet-maker:
-    build: ./bet-maker
+    build: bet_maker
     container_name: bet-maker
     restart: always
     ports:
@@ -43,7 +43,7 @@ services:
       - line-provider
 
   celery:
-    build: ./bet-maker
+    build: bet_maker
     container_name: celery_worker
     restart: always
     command: ["celery", "-A", "tasks", "worker", "--loglevel=info"]

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from ..schemas.event import EventCreateRequest, Event, EventCreateResponse, EventsGetResponse, EventGetResponse
-from ..services.event import create_new_event, get_events, get_event_by_id, update_event_status
+from ..schemas.events import EventCreateRequest, Event, EventsGetResponse, EventUpdateRequest
+from ..services.events import create_new_event, get_events, get_event_by_id, update_event_status
 
 router = APIRouter(prefix='/events', tags=["Events"])
 
@@ -33,6 +33,6 @@ async def get_event(event_id: int):
     path='/{event_id}',
     response_model = Event
 )
-async def update_event(event_id: int, status: int):
+async def update_event(event_id: int, status: EventUpdateRequest):
     updated_event: Event = await update_event_status(event_id, status)
     return updated_event
