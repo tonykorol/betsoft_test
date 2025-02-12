@@ -4,6 +4,10 @@ from bet_maker.config import settings
 
 
 async def get_available_events() -> list:
+    """
+    Get available events
+    :return:
+    """
     url = f"{settings.LINE_PROVIDER_URL}/events"
     async with httpx.AsyncClient() as client:
         response = await client.get(url)

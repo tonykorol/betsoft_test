@@ -11,5 +11,9 @@ router = APIRouter(prefix="/events", tags=["Events"])
     response_model=GetAvailableEventsResponse,
 )
 async def get_all_events():
+    """
+    Handler for get all events
+    :return:
+    """
     events = await get_available_events()
     return events

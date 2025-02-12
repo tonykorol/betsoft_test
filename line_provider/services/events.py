@@ -11,10 +11,20 @@ from ..utils.events_data import events
 
 
 async def check_event_exist(event_id: int) -> bool:
+    """
+    Check if event exist
+    :param event_id:
+    :return:
+    """
     return str(event_id) in events.keys()
 
 
 async def create_new_event(event: EventCreateRequest) -> Event:
+    """
+    Create new event
+    :param event:
+    :return:
+    """
     if await check_event_exist(event.event_id):
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail=f"Event with id {event.event_id} already exist")
     events[str(event.event_id)] = event
@@ -22,11 +32,20 @@ async def create_new_event(event: EventCreateRequest) -> Event:
 
 
 async def get_events() -> list[Event]:
+    """
+    Get all events
+    :return:
+    """
     all_events = list(e for e in events.values() if time.time() < e.deadline and e.state == EventState.NEW)
     return all_events
 
 
 async def get_event_by_id(event_id: int) -> Event:
+    """
+    Get event by id
+    :param event_id:
+    :return:
+    """
     try:
         event: Event = events[str(event_id)]
     except KeyError:
@@ -35,6 +54,12 @@ async def get_event_by_id(event_id: int) -> Event:
 
 
 async def update_event_status(event_id: int, status: EventUpdateRequest) -> Event:
+    """
+    Update event status
+    :param event_id:
+    :param status:
+    :return:
+    """
     event: Event = await get_event_by_id(event_id)
     event.state = status.state
 
@@ -44,6 +69,12 @@ async def update_event_status(event_id: int, status: EventUpdateRequest) -> Even
 
 
 async def send_webhook(event_id: int, status: int) -> None:
+    """
+    Send webhook to bet-maker
+    :param event_id:
+    :param status:
+    :return:
+    """
     async with httpx.AsyncClient() as client:
         response = await client.post(
             f"{settings.BET_MAKER_URL}/bets/webhook",
