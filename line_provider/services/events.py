@@ -1,9 +1,11 @@
 import time
 
+import httpx
 from fastapi import HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
-from ..schemas.events import EventCreateRequest, Event, EventState, EventUpdateRequest
+from line_provider.config import settings
+from ..schemas.events import EventCreateRequest, Event, EventUpdateRequest
 from ..utils.events_data import events
 
 
@@ -30,4 +32,20 @@ async def get_event_by_id(event_id: int) -> Event:
 async def update_event_status(event_id: int, status: EventUpdateRequest) -> Event:
     event: Event = await get_event_by_id(event_id)
     event.state = status.state
+
+    await send_webhook(event_id, status.state.value)
+
     return event
+
+async def send_webhook(event_id: int, status: int) -> None:
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{settings.BET_MAKER_URL}/bets/webhook",
+            json={
+                "event_id": event_id,
+                "status": status
+            })
+
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail="Failed to notify bet-maker")
+
