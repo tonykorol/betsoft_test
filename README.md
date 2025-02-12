@@ -4,8 +4,8 @@
 Этот проект представляет собой сервис для работы со ставками, разработанный с использованием Python, FastAPI и PostgreSQL. Контейнеризация обеспечивается с помощью Docker и Docker Compose.
 
 ## Требования
-- Docker
-- Docker Compose
+- Сервис **line_provider** - отвечает за события, на которые можно сделать ставки.
+- Сервис **bet_maker** - отвечает за ставки
 
 ## Установка и запуск
 
@@ -51,6 +51,20 @@ docker compose up --build
 Открыть в браузере:
 - API `bet-maker`: [http://localhost:8002/docs](http://localhost:8002/docs)
 - API `line-provider`: [http://localhost:8001/docs](http://localhost:8001/docs)
+
+
+### 5. Описание эндпоинтов
+- **line_provider**
+  - GET /events - получение всех событий, которые еще не завершились
+  - POST /events - создание события
+  - GET /events/{event_id} - информация о событии по id
+  - PATCH /events/{event_id} - изменение статуса события
+- **bet_maker**
+  - GET /events - получение всех событий, которые еще не завершились
+  - GET /bets - получение всех ставок
+  - POST /bets - создание новой ставки
+  - GET /bets/{bet_id} - информация о событии
+  - POST /bets/webhook - вебхук для изменения статуса ставки
 
 ## Остановка контейнеров
 ```sh

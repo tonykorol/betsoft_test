@@ -6,7 +6,7 @@ from starlette.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 from line_provider.config import settings
 
-from ..schemas.events import Event, EventCreateRequest, EventUpdateRequest
+from ..schemas.events import Event, EventCreateRequest, EventUpdateRequest, EventState
 from ..utils.events_data import events
 
 
@@ -22,7 +22,7 @@ async def create_new_event(event: EventCreateRequest) -> Event:
 
 
 async def get_events() -> list[Event]:
-    all_events = list(e for e in events.values() if time.time() < e.deadline)
+    all_events = list(e for e in events.values() if time.time() < e.deadline and e.state == EventState.NEW)
     return all_events
 
 

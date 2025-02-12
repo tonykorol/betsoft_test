@@ -15,17 +15,19 @@ async def get_all_bets_service(session: AsyncSession) -> list[Bet]:
     return result.scalars().all()
 
 
-async def check_event_exist(event_id) -> bool:
+async def check_event_exist_and_not_ended(event_id) -> bool:
     url = f"{settings.LINE_PROVIDER_URL}/events/{event_id}"
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
-        if response.status_code == 200:
+        if response.status_code == 200 and response.json()["state"] == 1:
             return True
 
 
+
 async def create_bet_service(bet_data: BetCreateRequest, session: AsyncSession) -> Bet:
-    if not await check_event_exist(bet_data.event_id):
-        raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Invalid event id")
+    if not await check_event_exist_and_not_ended(bet_data.event_id):
+        raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Invalid event id or event has ended")
+
     new_bet: Bet = Bet(**bet_data.model_dump())
     session.add(new_bet)
     await session.commit()
