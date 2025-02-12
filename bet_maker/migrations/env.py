@@ -1,9 +1,7 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 from bet_maker.config import settings
 
@@ -27,6 +25,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from bet_maker.models.base import Base
 from bet_maker.models import *
+
 target_metadata = Base.metadata
 # target_metadata = None
 
@@ -75,7 +74,7 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,
         )
 
         with context.begin_transaction():

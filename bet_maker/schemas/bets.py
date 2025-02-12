@@ -10,6 +10,7 @@ class BetBaseSchema(BaseModel):
     event_id: int
     amount: Decimal
 
+
 class BetSchema(BetBaseSchema):
     id: int
     status: BetStatus

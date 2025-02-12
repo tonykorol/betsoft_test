@@ -1,26 +1,28 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from bet_maker.database.db import get_async_session
 from bet_maker.models.bets import Bet
-from bet_maker.schemas.bets import GetAllBetsResponse, BetCreateRequest, OneBetResponse, BetUpdateStatusRequest
-from bet_maker.services.bets import get_bet_by_id, get_all_bets_service, create_bet_service, \
-    update_bets_status_service
+from bet_maker.schemas.bets import BetCreateRequest, BetUpdateStatusRequest, GetAllBetsResponse, OneBetResponse
+from bet_maker.services.bets import create_bet_service, get_all_bets_service, get_bet_by_id, update_bets_status_service
 
 router = APIRouter(prefix="/bets", tags=["Bets"])
 
+
 @router.get(
     path="",
-    response_model=GetAllBetsResponse
+    response_model=GetAllBetsResponse,
 )
 async def get_all_bets(
-        session: AsyncSession = Depends(get_async_session)
+        session: AsyncSession = Depends(get_async_session),
 ):
     bets: list[Bet] = await get_all_bets_service(session)
     return GetAllBetsResponse(bets=[b.to_pydantic_schema() for b in bets])
 
+
 @router.post(
     path="",
-    response_model=OneBetResponse
+    response_model=OneBetResponse,
 )
 async def create_bet(
         bet_data: BetCreateRequest,
@@ -32,7 +34,7 @@ async def create_bet(
 
 @router.get(
     path="/{bet_id}",
-    response_model=OneBetResponse
+    response_model=OneBetResponse,
 )
 async def get_one_bet(
         bet_id: int,
@@ -41,8 +43,9 @@ async def get_one_bet(
     bet: Bet = await get_bet_by_id(bet_id, session)
     return OneBetResponse(bet=bet.to_pydantic_schema())
 
+
 @router.post(
-    path='/webhook',
+    path="/webhook",
 )
 async def webhook(
         payload: BetUpdateStatusRequest,
@@ -50,4 +53,3 @@ async def webhook(
 ):
     await update_bets_status_service(payload, session)
     return {"message": "ok"}
-

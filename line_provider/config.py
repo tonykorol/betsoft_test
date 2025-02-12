@@ -1,10 +1,11 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from dotenv import load_dotenv
 import os
 
+from dotenv import load_dotenv
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 env_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(env_path, override=True)
+
 
 class Settings(BaseSettings):
     MODE: str

@@ -3,8 +3,8 @@ from decimal import Decimal
 from enum import Enum
 from typing import Any
 
+from sqlalchemy import DECIMAL, TIMESTAMP, Integer
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy import Integer, DECIMAL, TIMESTAMP
 from sqlalchemy.orm import Mapped, mapped_column
 
 from bet_maker.models.base import Base
@@ -17,7 +17,7 @@ class BetStatus(Enum):
 
 
 class Bet(Base):
-    __tablename__ = 'bets'
+    __tablename__ = "bets"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     event_id: Mapped[int] = mapped_column(Integer)

@@ -1,6 +1,6 @@
 import httpx
 from fastapi import HTTPException
-from sqlalchemy import select, Result
+from sqlalchemy import Result, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.status import HTTP_404_NOT_FOUND
 
@@ -31,6 +31,7 @@ async def create_bet_service(bet_data: BetCreateRequest, session: AsyncSession) 
     await session.commit()
     await session.refresh(new_bet)
     return new_bet
+
 
 async def get_bet_by_id(bet_id: int, session: AsyncSession) -> Bet:
     query = select(Bet).filter(Bet.id == bet_id)

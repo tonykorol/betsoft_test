@@ -11,7 +11,7 @@ class TestEventsHandler:
     @staticmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        ('url', 'expected_status_code', 'expectation'),
+        ("url", "expected_status_code", "expectation"),
         test_cases.PARAMS_TEST_GET_EVENTS,
     )
     async def test_events_get(
@@ -26,7 +26,7 @@ class TestEventsHandler:
     @staticmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        ('url', 'payload', 'expected_status_code', 'expectation'),
+        ("url", "payload", "expected_status_code", "expectation"),
         test_cases.PARAMS_TEST_POST_EVENTS,
     )
     async def test_events_post(
@@ -42,7 +42,7 @@ class TestEventsHandler:
     @staticmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        ('url', 'expected_status_code', 'expectation'),
+        ("url", "expected_status_code", "expectation"),
         test_cases.PARAMS_TEST_GET_ONE,
     )
     async def test_events_get_one(
@@ -57,7 +57,7 @@ class TestEventsHandler:
     @staticmethod
     @pytest.mark.asyncio
     @pytest.mark.parametrize(
-        ('url', 'payload', 'expected_status_code', 'expectation'),
+        ("url", "payload", "expected_status_code", "expectation"),
         test_cases.PARAMS_TEST_PATCH_ONE,
     )
     async def test_events_get_one(

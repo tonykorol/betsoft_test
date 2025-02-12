@@ -1,6 +1,5 @@
 import decimal
 import enum
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -13,9 +12,9 @@ class EventState(enum.Enum):
 
 class Event(BaseModel):
     event_id: int
-    coefficient: Optional[decimal.Decimal] = None
-    deadline: Optional[int] = None
-    state: Optional[EventState] = None
+    coefficient: decimal.Decimal | None = None
+    deadline: int | None = None
+    state: EventState | None = None
 
 
 class GetAvailableEventsResponse(BaseModel):
