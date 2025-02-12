@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: str
 
-    LINE_PROVIDER_URL: str = "http://127.0.0.1:8000"
+    LINE_PROVIDER_URL: str = "http://line-provider:8001"
 
     model_config = SettingsConfigDict(env_file=env_path)
 

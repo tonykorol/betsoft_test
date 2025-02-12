@@ -9,7 +9,7 @@ load_dotenv(env_path, override=True)
 class Settings(BaseSettings):
     MODE: str
 
-    BET_MAKER_URL: str = "http://127.0.0.1:8003"
+    BET_MAKER_URL: str = "http://bet-maker:8002"
 
     model_config = SettingsConfigDict(env_file=env_path)
 
