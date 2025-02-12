@@ -8,8 +8,6 @@ load_dotenv(env_path, override=True)
 
 
 class Settings(BaseSettings):
-    MODE: str
-
     DB_NAME: str
     DB_HOST: str
     DB_PORT: int
